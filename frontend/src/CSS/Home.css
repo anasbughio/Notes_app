@@ -1,0 +1,109 @@
+body {
+  font-family: 'Google Sans', Arial, sans-serif;
+  background-color: #f1f3f4;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Header */
+.header {
+  background: #fff;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dadce0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: #5f6368;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Top buttons */
+.top-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.add-btn, .logout-btn {
+  background: #fbbc04;
+  color: #202124;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-btn:hover, .logout-btn:hover {
+  background: #f9ab00;
+}
+
+/* Notes grid */
+.notes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+
+/* Note card */
+.note-card {
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0px 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  word-wrap: break-word;
+}
+
+.note-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.25);
+}
+
+/* Note text */
+.note-title {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #202124;
+}
+
+.note-content {
+  font-size: 0.95rem;
+  color: #3c4043;
+}
+
+.note-link {
+  text-decoration: none;
+  color: inherit;
+  flex-grow: 1;
+}
+
+/* Delete button */
+.delete-btn {
+  align-self: flex-end;
+  margin-top: 0.8rem;
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #5f6368;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #d93025;
+}

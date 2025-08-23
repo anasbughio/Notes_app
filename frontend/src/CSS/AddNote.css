@@ -1,0 +1,74 @@
+.add-note-page {
+  background-color: #fffefc; /* Keep background */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px;
+}
+
+.add-note-form {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note-title,
+.note-content {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+  background: transparent;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.note-title:focus,
+.note-content:focus {
+    outline: none;         /* removes the default blue glow */
+  border-bottom: 1px solid #e0e0e0; /* keeps the same light border */
+}
+
+.note-content {
+  resize: none;
+  min-height: 100px;
+}
+
+.add-btn {
+  align-self: flex-end;
+  background: #fbbc04; /* Keep Add button color */
+  color: #202124;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.add-btn:hover {
+  background: #f9ab00;
+}
+/* Put this at the end of AddNote.css */
+.note-title,
+.note-title:focus,
+.note-title:focus-visible,
+.note-title:-webkit-autofill,
+.note-title:-webkit-autofill:focus {
+  background: transparent !important;
+  color: #202124 !important;
+  -webkit-text-fill-color: #202124 !important;
+  border: none !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+}
