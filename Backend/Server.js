@@ -13,8 +13,10 @@ dotenv.config();
 const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors({
-  origin: ["https://notes-app-olive-phi.vercel.app"], 
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: [
+    "http://localhost:3000", 
+    "https://notes-app-olive-phi.vercel.app"  // your vercel link
+  ],
   credentials: true
 }));
 app.use('/api/notes',authMiddleware,notesRoutes);
