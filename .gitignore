@@ -20,6 +20,6 @@ dist/
 build/
 
 # env & logs
-.env
+.env 
 .env.local
 *.log
