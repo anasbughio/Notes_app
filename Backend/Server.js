@@ -13,7 +13,7 @@ dotenv.config();
 const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors({
-  origin: ["https://notes-lwedr8fbf-anas-projects-ddcc6eed-vercel.app"], 
+  origin: ["https://notes-app-olive-phi.vercel.app"], 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
