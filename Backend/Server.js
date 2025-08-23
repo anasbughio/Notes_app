@@ -12,7 +12,13 @@ app.use(cors());
 dotenv.config();
 const PORT = process.env.PORT;
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // local dev
+    "https://notes-app-olive-phi.vercel.app" // your deployed frontend
+  ],
+  credentials: true
+}));
 app.use('/api/notes',authMiddleware,notesRoutes);
 app.use('/api/auth',authRoutes);
 
