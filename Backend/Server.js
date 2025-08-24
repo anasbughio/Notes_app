@@ -9,15 +9,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://notes-app-olive-phi.vercel.app");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+// ✅ Minimal CORS fix for Vercel frontend
+app.use(cors({
+  origin: "https://notes-app-olive-phi.vercel.app", // exact frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-  if (req.method === "OPTIONS") return res.sendStatus(200); // ✅ important for preflight
-  next();
-});
-
+// Ensure all preflight OPTIONS requests succeed
+app.options("*", cors());
 
 app.use(express.json());
 
