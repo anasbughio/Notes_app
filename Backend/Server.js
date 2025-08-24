@@ -13,7 +13,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://notes-app-c4hd-h4l8fg293-anas-projects-ddcc6eed.vercel.app",
+    origin: "https://notes-app-olive-phi.vercel.app",
     credentials: true,
   })
 );
