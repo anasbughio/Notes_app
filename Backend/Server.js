@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const notesRoutes = require('./routes/notesRoutes');
 const authRoutes = require('./routes/authRoutes');
-const authMiddleware = require("./middlewares/authMiddlewares");
+
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use(
 
 // Explicitly handle OPTIONS
 app.options("*", cors());
-app.use('/api/notes',authMiddleware,notesRoutes);
+app.use('/api/notes',notesRoutes);
 app.use('/api/auth',authRoutes);
 
 
