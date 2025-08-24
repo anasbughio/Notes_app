@@ -10,7 +10,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(express.json());
 app.use(
   cors({
     origin: "https://notes-app-olive-phi.vercel.app", // your Vercel frontend
@@ -19,6 +18,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
 
 // Routes
 app.use('/api/notes', notesRoutes);
