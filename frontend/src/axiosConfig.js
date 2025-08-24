@@ -1,7 +1,8 @@
 import axios from 'axios';
-
+console.log(process.env.REACT_APP_API_URL);
 const instance = axios.create({
-    baseURL: "https://notesapp-production-173d.up.railway.app/api"
+    baseURL:process.env.REACT_APP_API_URL,
+        
 
 
 });
