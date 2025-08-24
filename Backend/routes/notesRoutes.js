@@ -3,11 +3,12 @@ const router = express.Router();
 const { addNotes, getNotes, deleteNotes, updateNotes ,getContent} = require('../controllers/todoControllers');
 const authMiddleware = require('../middlewares/authMiddlewares');
 
-router.get('/',getNotes);
-router.post('/',addNotes);
-router.get('/:id',getContent)
-router.put('/:id',updateNotes);
-router.delete('/:id',deleteNotes);
+router.get('/',authMiddleware,getNotes);
+router.post('/',authMiddleware,addNotes);
+router.get('/:id',authMiddleware,getContent)
+router.put('/:id',authMiddleware,updateNotes);
+router.delete('/:id',authMiddleware,deleteNotes);
 
 
 module.exports = router;
+
