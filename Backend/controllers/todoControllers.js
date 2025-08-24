@@ -50,7 +50,7 @@ const deleteNotes = async(req,res)=>{
     if(!note){
         return res.status(404).json({error:"Note not founnd"});
     }
-    res.status(500).json(note);
+    res.status(200).json(note);
 }
 
 const updateNotes = async(req,res)=>{
