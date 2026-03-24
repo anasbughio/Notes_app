@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 // ✅ Minimal CORS fix for Vercel frontend
 app.use(cors({
-  origin: "http://localhost:3000", // exact frontend URL
+  origin: "https://notes-app-liart-gamma-75.vercel.app", // exact frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
