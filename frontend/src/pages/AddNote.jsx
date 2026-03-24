@@ -16,7 +16,7 @@ const AddNote = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "/notes",
+        "notes",
         { title, content },
         {
           headers: { Authorization: `Bearer ${token}` },

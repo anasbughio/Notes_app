@@ -22,7 +22,7 @@ const NotesDetails = () => {
     }
 
     axios
-      .get(`/notes/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+      .get(`notes/${id}`, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
         if (res.data) {
           setNote(res.data);
@@ -43,7 +43,7 @@ const NotesDetails = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `/notes/${note._id}`,
+        `notes/${note._id}`,
         { title, content },
         { headers: { Authorization: `Bearer ${token}` } }
       );

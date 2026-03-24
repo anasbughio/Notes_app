@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("/auth/login", { email, password });
+      const res = await axios.post("auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       window.dispatchEvent(new Event("authChange")); // 🔥 force Navbar to update
       alert("Login successful");

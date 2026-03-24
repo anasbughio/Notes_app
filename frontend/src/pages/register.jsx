@@ -12,7 +12,7 @@ const Register = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/auth/register", { username, email, password });
+      const res = await axios.post("auth/register", { username, email, password });
       localStorage.setItem("token", res.data.token);
       alert("Registration successful!");
       navigate("/auth/login");

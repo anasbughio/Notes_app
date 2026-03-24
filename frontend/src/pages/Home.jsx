@@ -14,7 +14,7 @@ const Home = () => {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get('/notes', {
+      const res = await axios.get('notes', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const notesWithColors = res.data.map(note => ({
@@ -38,7 +38,7 @@ const Home = () => {
     setNotes(prev => prev.filter(n => n._id !== id));
 
     try {
-      await axios.delete(`/notes/${id}`, {  // note the leading slash
+      await axios.delete(`notes/${id}`, {  // note the leading slash removed
         headers: { Authorization: `Bearer ${token}` }
       });
       // success: nothing else needed
