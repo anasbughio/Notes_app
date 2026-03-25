@@ -1,6 +1,27 @@
 import { useState, useEffect } from "react";
 import axios from "../axiosConfig";
 import { useParams, useNavigate } from "react-router-dom";
+import { 
+  Container, 
+  Paper, 
+  Typography, 
+  TextField, 
+  Button, 
+  Box, 
+  IconButton, 
+  Tooltip,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Divider,
+  Fade
+} from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
+import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const NotesDetails = () => {
   const { id } = useParams();
@@ -26,6 +47,8 @@ const NotesDetails = () => {
       .then((res) => {
         if (res.data) {
           setNote(res.data);
+          setTitle(res.data.title);
+          setContent(res.data.content);
         } else {
           setNotFound(true);
         }
@@ -57,162 +80,139 @@ const NotesDetails = () => {
     }
   };
 
-  if (loading) return <p style={{ color: "#5f6368" }}>Loading note...</p>;
-  if (notFound || !note) return <p style={{ color: "red" }}>Note not found.</p>;
+  const deleteNote = async () => {
+    if (!window.confirm("Are you sure you want to delete this note?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`notes/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      navigate("/");
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
+  };
+
+  if (loading) return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+      <CircularProgress />
+    </Box>
+  );
+
+  if (notFound || !note) return (
+    <Container sx={{ textAlign: 'center', py: 10 }}>
+      <Typography variant="h5" color="error">Note not found.</Typography>
+      <Button onClick={() => navigate("/")} sx={{ mt: 2 }}>Back to Home</Button>
+    </Container>
+  );
 
   return (
-    <div style={styles.overlay} onClick={() => navigate("/")}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-        {!isEditing ? (
-          <>
-            <h2 style={styles.title}>{note.title}</h2>
-            <p style={styles.content}>{note.content}</p>
-            <div style={styles.btnRow}>
-              <button
-                style={styles.editBtn}
-                onClick={() => {
-                  setTitle(note.title);
-                  setContent(note.content);
-                  setIsEditing(true);
-                }}
-              >
-                ✏️ Edit
-              </button>
-              <button style={styles.closeBtn} onClick={() => navigate("/")}>
-                ✖ Close
-              </button>
-            </div>
-          </>
-        ) : (
-          <form onSubmit={handleUpdate} style={styles.form}>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              style={styles.input}
-              required
-              placeholder="Title"
-            />
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              style={styles.textarea}
-              required
-              placeholder="Take a note..."
-            ></textarea>
-            <div style={styles.btnRow}>
-              <button type="submit" style={styles.saveBtn} disabled={saving}>
-                {saving ? "Saving..." : "💾 Save"}
-              </button>
-              <button
-                type="button"
-                style={styles.cancelBtn}
-                onClick={() => setIsEditing(false)}
-              >
-                ❌ Cancel
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-    </div>
+    <Box sx={{ 
+      position: 'fixed', 
+      top: 0, 
+      left: 0, 
+      right: 0, 
+      bottom: 0, 
+      bgcolor: 'rgba(0,0,0,0.5)', 
+      zIndex: 1300,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backdropFilter: 'blur(4px)'
+    }} onClick={() => navigate("/")}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        style={{ width: '90%', maxWidth: '700px' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Paper elevation={24} sx={{ borderRadius: 4, overflow: 'hidden' }}>
+          <Box sx={{ px: 3, py: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', bgcolor: 'background.paper' }}>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>Note Details</Typography>
+            <IconButton onClick={() => navigate("/")}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Divider />
+          
+          <Box component="form" onSubmit={handleUpdate} sx={{ p: 4 }}>
+            {!isEditing ? (
+              <Fade in={true}>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 700, mb: 2, color: 'text.primary' }}>
+                    {note.title}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', whiteSpace: 'pre-wrap', minHeight: '150px', lineHeight: 1.7 }}>
+                    {note.content}
+                  </Typography>
+                </Box>
+              </Fade>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Title"
+                  InputProps={{ disableUnderline: true, style: { fontSize: '1.8rem', fontWeight: 700 } }}
+                  autoFocus
+                />
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={8}
+                  variant="standard"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Content"
+                  InputProps={{ disableUnderline: true, style: { fontSize: '1.1rem', lineHeight: 1.7 } }}
+                />
+              </Box>
+            )}
+            
+            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Tooltip title="Delete Note">
+                  <IconButton onClick={deleteNote} color="error" sx={{ bgcolor: 'error.light', color: 'white', '&:hover': { bgcolor: 'error.main' } }}>
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                {!isEditing ? (
+                  <Button 
+                    variant="contained" 
+                    startIcon={<EditIcon />} 
+                    onClick={() => setIsEditing(true)}
+                    sx={{ borderRadius: 3, px: 3 }}
+                  >
+                    Edit Note
+                  </Button>
+                ) : (
+                  <>
+                    <Button onClick={() => setIsEditing(false)} color="inherit">Cancel</Button>
+                    <Button 
+                      type="submit" 
+                      variant="contained" 
+                      startIcon={<SaveIcon />} 
+                      disabled={saving}
+                      sx={{ borderRadius: 3, px: 3 }}
+                    >
+                      {saving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </>
+                )}
+              </Box>
+            </Box>
+          </Box>
+        </Paper>
+      </motion.div>
+    </Box>
   );
-};
-
-const styles = {
- overlay: {
-    backgroundColor: "#fffefc",
-  position: "fixed",
-  inset: "60px 0 0 0",  // leave space for navbar
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingTop: "60px", // modal not fully centered, like Keep
-    zIndex: 900, // lower than navbar
-  },
-  
-  modal: {
-    background: "#ffffff", // note card background
-    padding: "20px",
-    borderRadius: "12px",
-    boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-    maxWidth: "600px",
-    width: "100%",
-  },
-  title: {
-    margin: "0 0 10px 0",
-    color: "#202124",
-    fontWeight: "600",
-    fontSize: "1.3rem",
-  },
-  content: {
-    color: "#3c4043",
-    fontSize: "1rem",
-    marginBottom: "15px",
-    whiteSpace: "pre-wrap",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-  },
-  input: {
-    padding: "10px",
-    borderRadius: "8px",
-    border: "1px solid #dadce0",
-    fontSize: "1rem",
-    outline: "none",
-  },
-  textarea: {
-    padding: "10px",
-    borderRadius: "8px",
-    border: "1px solid #dadce0",
-    fontSize: "1rem",
-    outline: "none",
-    minHeight: "120px",
-    resize: "vertical",
-  },
-  btnRow: {
-    display: "flex",
-    gap: "10px",
-    marginTop: "10px",
-  },
-  editBtn: {
-    background: "#fbbc04",
-    padding: "8px 15px",
-    borderRadius: "8px",
-    border: "none",
-    cursor: "pointer",
-    color: "#202124",
-    fontWeight: "bold",
-  },
-  saveBtn: {
-    background: "#34a853",
-    padding: "8px 15px",
-    borderRadius: "8px",
-    border: "none",
-    cursor: "pointer",
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  cancelBtn: {
-    background: "#ea4335",
-    padding: "8px 15px",
-    borderRadius: "8px",
-    border: "none",
-    cursor: "pointer",
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  closeBtn: {
-    background: "#e0e0e0",
-    padding: "8px 15px",
-    borderRadius: "8px",
-    border: "none",
-    cursor: "pointer",
-    color: "#202124",
-    fontWeight: "bold",
-  },
 };
 
 export default NotesDetails;
